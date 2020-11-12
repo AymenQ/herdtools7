@@ -40,6 +40,7 @@ type t =
   | TagCheckUnprecise
   | TooFar
   | Morello
+  | Neon
 (* Branch speculation+ cat computation of dependencies *)
   | Deps
   | Instances (* Compute dependencies on instruction instances *)
@@ -71,6 +72,7 @@ let parse s = match Misc.lowercase s with
 | "tagcheckunprecise"|"unprecise" -> Some TagCheckUnprecise
 | "toofar" -> Some TooFar
 | "morello" -> Some Morello
+| "neon" -> Some Neon
 | "deps" -> Some Deps
 | "instances"|"instance" -> Some Instances
 | _ -> None
@@ -96,6 +98,7 @@ let pp = function
   | TagCheckUnprecise -> "TagCheckUnprecise"
   | TooFar -> "TooFar"
   | Morello -> "Morello"
+  | Neon -> "Neon"
   | Deps -> "Deps"
   | Instances -> "Instances"
 
