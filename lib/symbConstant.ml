@@ -23,6 +23,7 @@ module Make(Scalar:Scalar.S) = struct
   open Constant
 
   let intToV i = Concrete (Scalar.of_int i)
+  let stringToV s = Concrete (Scalar.of_string s)
   and nameToV s = Symbolic {default_symbolic_data with name=s}
 
   let bit_at k v = Scalar.bit_at k v
