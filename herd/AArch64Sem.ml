@@ -189,6 +189,24 @@ module Make
 (* Fence *)
       let create_barrier b ii = M.mk_singleton_es (Act.Barrier b) ii
 
+(* Neon size *)
+      let neon_esize r = match r with
+      | AArch64Base.Vreg (_,(_,esize)) -> esize
+      | _ -> assert false
+
+      let neon_nelem r = match r with
+      | AArch64Base.Vreg (_,(nelem,_)) -> nelem
+      | _ -> assert false
+
+      let neon_sz r = match r with
+      | AArch64Base.Vreg(_,(nelem,esize)) -> 
+          (match nelem * esize with
+          | 64 -> MachSize.Quad
+          | 128 -> MachSize.S128
+          | _ -> assert false)
+      | _ -> assert false
+
+
 (******************)
 (* Memory Tagging *)
 (******************)
