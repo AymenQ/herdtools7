@@ -43,7 +43,7 @@ let check_noext = function
 %token LSL LSR ASR UXTW
 
 /* Instructions */
-%token NOP HINT HLT
+%token NOP DEBUG HINT HLT
 %token B BR BEQ BNE BGE BGT BLE BLT CBZ CBNZ EQ NE GE GT LE LT TBZ TBNZ
 %token BL BLR RET
 %token LDR LDP LDNP STP STNP LDRB LDRH LDUR STR STRB STRH STLR STLRB STLRH
@@ -238,6 +238,7 @@ label_addr:
 
 instr:
 | NOP { A.I_NOP }
+| DEBUG { A.I_DEBUG }
 | HINT NUM { A.I_NOP }
 | HLT NUM { A.I_NOP }
 /* Branch */

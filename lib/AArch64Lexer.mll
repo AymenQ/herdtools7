@@ -25,6 +25,7 @@ module LU = LexUtils.Make(O)
 let check_name name =
 if O.debug then Printf.eprintf "Check: '%s'\n"  name ;
 match name with
+| "debug" | "DEBUG" -> DEBUG
 | "nop"|"NOP" -> NOP
 (* Hints are NOPS in AArch64 *)
 | "hint"|"HINT" -> HINT

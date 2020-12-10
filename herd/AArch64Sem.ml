@@ -608,6 +608,11 @@ module Make
         M.addT (A.next_po_index ii.A.program_order_index)
           AArch64Base.(
         match ii.A.inst with
+        | I_DEBUG ->
+            let reg = (AArch64Base.Ireg R0) in
+            write_reg reg (V.intToV 0) ii >>= fun _ ->
+            write_reg reg (V.intToV 1) ii >>= fun _ ->
+            write_reg reg (V.intToV 2) ii >>! B.Next
         | I_NOP ->
             M.unitT B.Next
               (* Branches *)

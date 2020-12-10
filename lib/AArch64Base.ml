@@ -437,6 +437,7 @@ let pp_imm n = "#" ^ string_of_int n
 
 type 'k kinstruction =
   | I_NOP
+  | I_DEBUG
 (* Branches *)
   | I_B of lbl | I_BR of reg
   | I_BC of condition * lbl
@@ -646,6 +647,7 @@ let do_pp_instruction m =
 
   fun i -> match i with
   | I_NOP -> "NOP"
+  | I_DEBUG -> "DEBUG"
 (* Branches *)
   | I_B lbl ->
       sprintf "B %s" (pp_label lbl)
@@ -853,7 +855,7 @@ let fold_regs (f_regs,f_sregs) =
   | RV (_,r) -> fold_reg r y in
 
   fun c ins -> match ins with
-  | I_NOP | I_B _ | I_BC _ | I_BL _ | I_FENCE _ | I_RET None
+  | I_NOP | I_DEBUG | I_B _ | I_BC _ | I_BL _ | I_FENCE _ | I_RET None
     -> c
   | I_CBZ (_,r,_) | I_CBNZ (_,r,_) | I_BLR r | I_BR r | I_RET (Some r)
   | I_MOV (_,r,_) | I_MOVZ (_,r,_,_) | I_MOVK (_,r,_,_)
@@ -905,6 +907,7 @@ let map_regs f_reg f_symb =
 
   fun ins -> match ins with
   | I_NOP
+  | I_DEBUG
 (* Branches *)
   | I_B _
   | I_BC _
@@ -1064,6 +1067,7 @@ let get_next = function
     -> [Label.Next; Label.To lbl;]
   | I_BLR _|I_BR _|I_RET _ -> [Label.Any]
   | I_NOP
+  | I_DEBUG
   | I_LDR _
   | I_LDUR _
   | I_LDR_P _
@@ -1125,6 +1129,7 @@ include Pseudo.Make
 
       let parsed_tr i = match i with
         | I_NOP
+        | I_DEBUG
         | I_B _
         | I_BR _
         | I_BC _
@@ -1199,6 +1204,7 @@ include Pseudo.Make
         | I_LDCT _ | I_STCT _
           -> 4
         | I_NOP
+        | I_DEBUG
         | I_B _ | I_BR _
         | I_BL _ | I_BLR _
         | I_RET _

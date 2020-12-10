@@ -36,7 +36,8 @@ include Arch.MakeArch(struct
     | _ -> None
 
   let match_instr subs pattern instr = match pattern,instr with
-    | I_NOP,I_NOP -> Some subs
+    | I_NOP,I_NOP
+    | I_DEBUG,I_DEBUG -> Some subs
     | I_FENCE fp,I_FENCE fi when fp = fi
                             -> Some subs
 
@@ -113,7 +114,7 @@ include Arch.MakeArch(struct
       | K k ->
           find_cst k >! fun k -> K k in
     function
-    | (I_FENCE _|I_NOP|I_RET None) as i -> unitT i
+    | (I_FENCE _|I_NOP|I_DEBUG|I_RET None) as i -> unitT i
     | I_B l ->
         find_lab l >! fun l -> I_B l
     | I_BR r ->
