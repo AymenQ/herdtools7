@@ -428,6 +428,14 @@ module Make
           >>= fun (v1,v2) -> shift s v2
           >>= fun v2 -> M.add v1 v2
 
+      let post_kr rA addr kr ii =
+        let open AArch64Base in
+        let get_k = match kr with
+        | K k -> M.unitT (V.intToV k)
+        | RV(_,rO) -> read_reg_ord rO ii in
+        get_k >>= fun k -> M.add addr k >>= fun new_addr ->
+        write_reg rA new_addr ii
+    
       let lift_memop mv mop perms ma ii =
         if memtag then
           M.delay ma >>| M.delay mv >>= fun ((_,ma),(_,mv)) ->
