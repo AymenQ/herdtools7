@@ -431,7 +431,8 @@ module Make
         let get_k = match kr with
         | K k -> M.unitT (V.intToV k)
         | RV(_,rO) -> read_reg_ord rO ii in
-        get_k >>= fun k -> M.add addr k >>= fun new_addr ->
+        get_k >>= fun k -> if V.is_zero k then M.unitT() else
+        M.add addr k >>= fun new_addr ->
         write_reg rA new_addr ii
     
       let lift_memop mv mop perms ma ii =
